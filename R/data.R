@@ -1,24 +1,37 @@
-#' Quality Control Mapping
+#' ALS Example dataset
+#'
+#' An ALS-related example dataset.
+#'
+#' @format A list
+#' \describe{
+#'   \item{subjid}{Subject ID}
+#'   \item{p1}{ALSFRS-R 1}
+#'   \item{p2}{ALSFRS-R 2}
+#'   \item{p3}{ALSFRS-R 3}
+#'   \item{p4}{ALSFRS-R 4}
+#'   \item{p5}{ALSFRS-R 5}
+#'   \item{p6}{ALSFRS-R 6}
+#'   \item{p7}{ALSFRS-R 7}
+#'   \item{p8}{ALSFRS-R 8}
+#'   \item{p9}{ALSFRS-R 9}
+#'   \item{x1r}{ALSFRS-R R1}
+#'   \item{x2r}{ALSFRS-R R2}
+#'   \item{x3r}{ALSFRS-R R3}
+#'   \item{age_at_baseline}{Age at baseline}
+#'   \item{age_at_onset}{Age at onsite}
+#'   \item{onset}{Region of onset}
+#'   \item{baseline_date}{Baseline date3}
+#'   \item{death_date}{Death date}
+#' }
+"als_data"
+
+#' 
 #'
 #' An example dataset containing a Quality Control mapping.
 #'
-#' @format A data frame with 100 rows and 15 variables:
-#' \describe{
-#'   \item{variable}{variable}
-#'   \item{visdy}{Visit day}
-#'   \item{p1}{Scale items}
-#'   \item{p2}{Scale items}
-#'   \item{p3}{Scale items}
-#'   \item{p4}{Scale items}
-#'   \item{p5}{Scale items}
-#'   \item{p6}{Scale items}
-#'   \item{p7}{Scale items}
-#'   \item{p8}{Scale items}
-#'   \item{p9}{Scale items}
-#'   \item{p10}{Scale items}
-#'   \item{x1r}{Scale items}
-#'   \item{x2r}{Scale items}
-#'   \item{x3r}{Scale items}
-#' }
-#' @source \url{https://pubmed.ncbi.nlm.nih.gov/10540002/}
-"alsfrs_data"
+#' @format A list of 3 tibbles
+#'   \item{missing}{Table with all the "missing" tests  }
+#'   \item{inconsistencies}{Table with all the "inconsistencies" tests.}
+#'   \item{range}{Table with all the "out of range" tests.}
+#' 
+"qc_mapping"

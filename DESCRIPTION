@@ -12,8 +12,10 @@ Description: An easy framework to set a quality control workflow on a dataset.
   Includes a various range of functions that allow to establish an adaptable 
   data quality control.
 Imports:
-  abind,
-  dplyr
+  dplyr,
+  lubridate,
+  stringr,
+  janitor
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
