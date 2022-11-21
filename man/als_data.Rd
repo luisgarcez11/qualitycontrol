@@ -6,7 +6,7 @@
 \title{ALS Example dataset}
 \format{
 A list
-\describe{
+\itemize{
 \item{subjid}{Subject ID}
 \item{p1}{ALSFRS-R 1}
 \item{p2}{ALSFRS-R 2}

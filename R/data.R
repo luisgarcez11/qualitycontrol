@@ -3,7 +3,7 @@
 #' An ALS-related example dataset.
 #'
 #' @format A list
-#' \describe{
+#' \itemize{
 #'   \item{subjid}{Subject ID}
 #'   \item{p1}{ALSFRS-R 1}
 #'   \item{p2}{ALSFRS-R 2}
@@ -23,15 +23,15 @@
 #'   \item{baseline_date}{Baseline date3}
 #'   \item{death_date}{Death date}
 #' }
-"als_data"
+'als_data'
 
-#' 
-#'
-#' An example dataset containing a Quality Control mapping.
+#' An example dataset containing a Quality Control mapping
 #'
 #' @format A list of 3 tibbles
-#'   \item{missing}{Table with all the "missing" tests  }
-#'   \item{inconsistencies}{Table with all the "inconsistencies" tests.}
-#'   \item{range}{Table with all the "out of range" tests.}
 #' 
-"qc_mapping"
+#' \itemize{
+#'   \item{missing}{Table with all the 'missing' tests.  }
+#'   \item{inconsistencies}{Table with all the 'inconsistencies' tests.}
+#'   \item{range}{Table with all the 'out of range' tests.}
+#'   }
+'qc_mapping'

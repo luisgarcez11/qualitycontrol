@@ -16,7 +16,7 @@
 #' test_range(als_data, 'age_at_baseline', lower_value = 20, upper_value = 100, 
 #' type = 'numeric')
 #' test_range(als_data, 'age_at_onset', lower_value = 20, upper_value = 100,
-#'  type = 'numeric')
+#' type = 'numeric')
 #' test_range(als_data, 'baseline_date', lower_value = '2000-01-01', upper_value = '2022-01-01', 
 #' type = 'date')
 #' test_range(als_data, 'death_date', lower_value = '2000-01-01', upper_value = '2022-01-01',
@@ -75,9 +75,6 @@ test_range <- function(data, variable, type, categories = NULL,
     return(dplyr::bind_rows(findings_format, findings) %>% dplyr::mutate_all(~as.character(.)))
     
   }
-  
-  
-  
 }
 
 #' Test the inconsistencies between variables on a dataset

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `long2lstmarray`
+# `qualitycontrol`
 
 The goal of `long2lstmarray` is to transform 2D longitudinal data into
 3D arrays suitable for neural networks training that require

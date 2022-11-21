@@ -3,17 +3,20 @@
 \docType{data}
 \name{qc_mapping}
 \alias{qc_mapping}
-\title{An example dataset containing a Quality Control mapping.}
+\title{An example dataset containing a Quality Control mapping}
 \format{
 A list of 3 tibbles
-\item{missing}{Table with all the "missing" tests  }
-\item{inconsistencies}{Table with all the "inconsistencies" tests.}
-\item{range}{Table with all the "out of range" tests.}
+
+\itemize{
+\item{missing}{Table with all the 'missing' tests.  }
+\item{inconsistencies}{Table with all the 'inconsistencies' tests.}
+\item{range}{Table with all the 'out of range' tests.}
+}
 }
 \usage{
 qc_mapping
 }
 \description{
-An example dataset containing a Quality Control mapping.
+An example dataset containing a Quality Control mapping
 }
 \keyword{datasets}
