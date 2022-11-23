@@ -166,7 +166,7 @@ test_missing <- function(data, variable){
 #' test_duplicated(als_data, 'subjid')
 test_duplicated <- function(data, variable){
   
-  suppressWarnings({findings_complete <- data %>% janitor::get_dupes() %>% 
+  suppressMessages({findings_complete <- data %>% janitor::get_dupes() %>% 
     dplyr::mutate(finding = paste('rows are duplicated'))} )
   
   findings <- data %>% janitor::get_dupes(variable ) %>%
