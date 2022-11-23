@@ -215,12 +215,20 @@ qc_data <- function(data, qc_mapping, output_file = NULL){
       if(qc_type == 'duplicated'){
         
         variable <-  as.character(qc_battery[test, 'variable'])
+
+        #check variable names
+        if(!variable %in% names(data)){stop(paste(variable, "is not a variable name"))}
+        
         findings <- findings %>% dplyr::bind_rows(test_duplicated(data, variable))
       }
       
       if(qc_type == 'missing'){
         
         variable <-  as.character(qc_battery[test, 'variable'])
+        
+        #check variable names
+        if(!variable %in% names(data)){stop(paste(variable, "is not a variable name"))}
+        
         findings <- findings %>% dplyr::bind_rows(test_missing(data, variable))
       }
       
@@ -229,6 +237,10 @@ qc_data <- function(data, qc_mapping, output_file = NULL){
         variable1 <-  as.character(qc_battery[test, 'variable1'] )
         relation <-  as.character(qc_battery[test, 'relation'])
         variable2 <-  as.character(qc_battery[test, 'variable2'])
+        
+        #chack variable names
+        if(!variable1 %in% names(data)){stop(paste(variable, "is not a variable name"))}
+        if(!variable2 %in% names(data)){stop(paste(variable, "is not a variable name"))}
       
         findings <- findings %>% dplyr::bind_rows(test_inconsistencies(data,
                                                                 variable1 = variable1,

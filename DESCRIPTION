@@ -5,7 +5,7 @@ Authors@R:
   person(given = "Luis",
          family = "Garcez",
          role = c("aut", "cre", "cph"),
-         email = "luis_garcez_ferreira@alunos.fc.ul.pt",
+         email = "luisgarcez1@gmail.com",
          comment = c(ORCID = "0000-0002-8637-7946"))
 Maintainer: Luis Garcez <luis_garcez_ferreira@alunos.fc.ul.pt>
 Description: An easy framework to set a quality control workflow on a dataset.
@@ -18,7 +18,7 @@ Imports:
   janitor,
   openxlsx,
   readxl
-License: GPL (>= 3)
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

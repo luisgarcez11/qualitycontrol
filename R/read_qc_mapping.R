@@ -1,10 +1,10 @@
 
 #' Read QC mapping variable
 #'
-#' @description `data_qc_mapping` reads an `.xlsx` file that contains 
+#' @description `read_qc_mapping` reads an `.xlsx` file that contains 
 #' the QC mapping.
 #' 
-#' @param file excel file path to be read. Each tab should contain
+#' @param path excel file path to be read. Each tab should contain
 #' 3 tabs with the names missing, inconsistencies and range. Each tab
 #' will correspond to one QC mapping table.
 #' 
@@ -29,36 +29,39 @@
 #' @return A list containing all the QC mapping tables
 #' @export
 #' 
-data_qc_mapping <- function(file){
+read_qc_mapping <- function(path){
   
-  excelsheets <- readxl::excel_sheets(file)
+  excelsheets <- readxl::excel_sheets(path)
   
   qc_mapping <- list()
   
+  
   if("missing" %in% excelsheets){
     
-    qc_mapping$missing <- readxl::read_excel("data-raw/qc_mapping.xlsx", sheet = "missing")
+    qc_mapping$missing <- readxl::read_excel(path, sheet = "missing", col_types = "text")
     for( i in c("qc_type","variable", "type")){if(! i %in% names(qc_mapping$missing)){
       stop(paste( "no column named", i, "in missing tab"))
     }}
     
+    stopifnot(qc_mapping$missing$qc_type %in% c("missing", "duplicated",
+                                                "inconsistent_values","range"))
     stopifnot(qc_mapping$missing$type %in% c("numeric", "text", "categorical", "date"))
     
     }
   
   if("inconsistencies" %in% excelsheets){
-    qc_mapping$inconsistencies <- readxl::read_excel("data-raw/qc_mapping.xlsx", 
-                                                     sheet = "inconsistencies")
+    qc_mapping$inconsistencies <- readxl::read_excel(path, 
+                                                     sheet = "inconsistencies", col_types = "text")
     
     for( i in c("qc_type", "variable1", "type1", "relation", "variable2", "type2")){
       if(! i %in% names(qc_mapping$inconsistencies)){
         stop(paste( "no column named", i, "in missing tab"))}}
     
-    stopifnot(qc_mapping$missing$qc_type %in% c("missing", "duplicated",
+    stopifnot(qc_mapping$inconsistencies$qc_type %in% c("missing", "duplicated",
                                                 "inconsistent_values","range"))
-    stopifnot(qc_mapping$missing$type1 %in% c("numeric", "text", "categorical", "date"))
-    stopifnot(qc_mapping$missing$type2 %in% c("numeric", "text", "categorical", "date"))
-    stopifnot(qc_mapping$missing$relation %in% c("greater_than", "greater_than_or_equal",
+    stopifnot(qc_mapping$inconsistencies$type1 %in% c("numeric", "text", "categorical", "date"))
+    stopifnot(qc_mapping$inconsistencies$type2 %in% c("numeric", "text", "categorical", "date"))
+    stopifnot(qc_mapping$inconsistencies$relation %in% c("greater_than", "greater_than_or_equal",
                                                  "lower_than", "lower_than_or_equal", 
                                                  "equal"))
     
@@ -68,17 +71,15 @@ data_qc_mapping <- function(file){
   
   
   if("range" %in% excelsheets){
-    qc_mapping$range <- readxl::read_excel("data-raw/qc_mapping.xlsx", sheet = "range")
+    qc_mapping$range <- readxl::read_excel(path, sheet = "range", col_types = "text")
     
     for( i in c("qc_type", "variable", "type", "lower_value", "upper_value", "categories")){
       if(! i %in% names(qc_mapping$range)){
         stop(paste( "no column named", i, "in range tab"))}}
     
-    stopifnot(qc_mapping$missing$qc_type %in% c("missing", "duplicated",
+    stopifnot(qc_mapping$range$qc_type %in% c("missing", "duplicated",
                                                 "inconsistent_values","range"))
-    stopifnot(qc_mapping$missing$type %in% c("numeric", "text", "categorical", "date"))
-    stopifnot(!stringr::str_detect(qc_mapping$missing$lower_value, "\\w") )
-    stopifnot(!stringr::str_detect(qc_mapping$missing$lower_value, "[:symbol:]") )
+    stopifnot(qc_mapping$range$type %in% c("numeric", "text", "categorical", "date"))
     
     }
   

@@ -38,7 +38,7 @@ als_data
 
 ### QC mapping 
 
-The `als_data_qc_mapping` is an `R list` which contains 3 tables specifying all the tests used for quality control.
+The `als_data_qc_mapping` is an `R list` which contains 3 tables specifying all the tests used for quality control. You can specify your own tests, by creating an excel file and then read it using the funcion `read_qc_mapping`.
 
 #### Missing
 ```{r}
