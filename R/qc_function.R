@@ -31,7 +31,7 @@ test_range <- function(data, variable, type, categories = NULL,
     if(is.null(categories)){stop('categories must be specified')}
     
     findings<- data[which(!data[[variable]] %in% categories),] %>% 
-      dplyr::mutate(finding = paste('variable:', variable, 'is not a category'))
+      dplyr::mutate(finding = paste('variable', variable, 'is not a category'))
   
   return(findings %>% dplyr::mutate_all(~as.character(.)))
   
@@ -47,7 +47,7 @@ test_range <- function(data, variable, type, categories = NULL,
     if(is.null(upper_value)){stop('upper value must be specified')}
     
     findings<- data[which(data[[variable]] < lower_value | data[[variable]] > upper_value),] %>% 
-      dplyr::mutate(finding = paste('variable:', variable,  'is out of range'))
+      dplyr::mutate(finding = paste('variable', variable,  'is out of range'))
     
     return(findings %>% dplyr::mutate_all(~as.character(.)))
     
@@ -60,7 +60,7 @@ test_range <- function(data, variable, type, categories = NULL,
     findings_format <- data[!stringr::str_detect(string = data[[variable]], 
                                                 pattern = '\\d{4}(-|/)\\d{2}(-|/)\\d{2}') &
                              !is.na(data[[variable]]),] %>% 
-      dplyr::mutate(finding = paste('variable:', variable,  'is not on the right format'))
+      dplyr::mutate(finding = paste('variable', variable,  'is not on the right format'))
   
     if(lubridate::year(as.Date(lower_value))< 1900){stop('write dates on YYYY-MM-DD format')}
     if(lubridate::year(as.Date(upper_value))< 1900){stop('write dates on YYYY-MM-DD format')}
@@ -70,7 +70,7 @@ test_range <- function(data, variable, type, categories = NULL,
     
     findings <- data[which(as.Date(data[[variable]]) < as.Date(lower_value) | 
                              as.Date(data[[variable]]) > as.Date(upper_value)),] %>% 
-      dplyr::mutate(finding = paste('variable:', variable,  'is out of range'))
+      dplyr::mutate(finding = paste('variable', variable,  'is out of range'))
     
     return(dplyr::bind_rows(findings_format, findings) %>% dplyr::mutate_all(~as.character(.)))
     
@@ -173,9 +173,9 @@ test_duplicated <- function(data, variable){
     dplyr::mutate(finding = paste( variable, 'variable is duplicated')) 
   
   if("dupe_count" %in% names(findings)){
-    findings <- findings %>% dplyr::select(-dupe_count)}
+    findings <- findings %>% dplyr::select(-"dupe_count")}
   if("dupe_count" %in% names(findings_complete)){
-    findings_complete <- findings_complete %>% dplyr::select(-dupe_count)}
+    findings_complete <- findings_complete %>% dplyr::select(-"dupe_count")}
   
   return(dplyr::bind_rows(findings,findings_complete) %>% dplyr::mutate_all(~as.character(.)))
   
@@ -188,6 +188,8 @@ test_duplicated <- function(data, variable){
 #' @param data A data frame, data frame extension (e.g. a `tibble`) to be QCed.
 #' @param qc_mapping A list of data frame or data frame extension (e.g. a `tibble`) 
 #' specifying the tests. Each data frame row represents a test to the `data`.
+#' @param output_file (optional) File path ended in `.xlsx` or `.xls`. 
+#' If is not null, findings table to be written to this path.
 #'
 #' @importFrom dplyr %>%
 #' @importFrom dplyr tibble
@@ -196,8 +198,8 @@ test_duplicated <- function(data, variable){
 #' @export
 #'
 #' @examples
-#' qc_data(als_data, qc_mapping)
-qc_data <- function(data, qc_mapping){
+#' qc_data(als_data, als_data_qc_mapping)
+qc_data <- function(data, qc_mapping, output_file = NULL){
   
   findings <- dplyr::tibble()
   
@@ -254,6 +256,14 @@ qc_data <- function(data, qc_mapping){
     }
     
   }
+  
+  if(!is.null(output_file)){
+    
+    print(paste("writing findings in", output_file))
+    openxlsx::write.xlsx(findings, file = output_file)
+    return(findings)
+  }
+  
   return(findings)
 }
   

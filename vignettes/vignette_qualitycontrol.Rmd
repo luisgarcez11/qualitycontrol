@@ -1,6 +1,19 @@
 ---
-output: github_document
+title: "qualitycontrol"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{arrary2lstmarray}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 

@@ -34,4 +34,4 @@
 #'   \item{inconsistencies}{Table with all the 'inconsistencies' tests.}
 #'   \item{range}{Table with all the 'out of range' tests.}
 #'   }
-'qc_mapping'
+'als_data_qc_mapping'

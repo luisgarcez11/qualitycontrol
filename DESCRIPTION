@@ -15,7 +15,9 @@ Imports:
   dplyr,
   lubridate,
   stringr,
-  janitor
+  janitor,
+  openxlsx,
+  readxl
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
