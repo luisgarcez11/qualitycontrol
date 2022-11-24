@@ -2,25 +2,14 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE, eval = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
-
-# `qualitycontrol`
+# qualitycontrol
 
 
-The goal of `qualitycontrol` is to set a data quality control framework
+The goal of qualitycontrol is to set a data quality control framework
 
 ## Installation
 
-You can install the `qualitycontrol` from [GitHub](https://github.com/) with:
+You can install the qualitycontrol from [GitHub](https://github.com/) with:
 
 ```{r, eval = FALSE}
 # install.packages("devtools")
@@ -36,7 +25,7 @@ library(qualitycontrol)
 als_data
 ```
 
-### QC mapping 
+### QC mapping
 
 The `als_data_qc_mapping` is an `R list` which contains 3 tables specifying all the tests used for quality control. You can specify your own tests, by creating an excel file and then read it using the function `read_qc_mapping`.
 
@@ -58,10 +47,10 @@ als_data_qc_mapping$range
 
 ### `qc_data` function
 
-`qc_data` takes as arguments the data to be quality contolled and the QC mapping containing the tests to be applied.
+`qc_data` takes as arguments the data to be quality controlled and the QC mapping containing the tests to be applied.
 
 ```{r}
-qc_data(als_data, als_data_qc_mapping)
+qc_data(als_data, als_data_qc_mapping)[,c("subjid","age_at_onset","onset","baseline_date","death_date","finding")]
 ```
 
  This will return a table with all the findings. If you want to save it, you can specify the path to be saved in `output_file`.

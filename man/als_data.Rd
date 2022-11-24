@@ -3,7 +3,7 @@
 \docType{data}
 \name{als_data}
 \alias{als_data}
-\title{ALS Example dataset}
+\title{Amyotrophic lateral sclerosis Example dataset}
 \format{
 A list
 \itemize{
@@ -31,6 +31,6 @@ A list
 als_data
 }
 \description{
-An ALS-related example dataset.
+An Amyotrophic lateral sclerosis related example dataset.
 }
 \keyword{datasets}

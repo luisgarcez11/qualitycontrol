@@ -1,4 +1,4 @@
-#' ALS Example dataset
+#' Amyotrophic lateral sclerosis Example dataset
 #'
 #' An Amyotrophic lateral sclerosis related example dataset.
 #'

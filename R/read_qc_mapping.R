@@ -1,5 +1,5 @@
 
-#' Read QC mapping variable
+#' Read Quality Control mapping file
 #'
 #' @description `read_qc_mapping` reads an `.xlsx` file that contains 
 #' the QC mapping.
@@ -9,7 +9,7 @@
 #' will correspond to one QC mapping table.
 #' 
 #' 
-#' QC mapping `excel` file shoud contain 3 tabs:
+#' QC mapping `excel` file should contain 3 tabs:
 #' * missing: columns should be named as "qc_type", 
 #' "variable" and `type".
 #' * inconsistencies: columns should be named as "qc_type", 

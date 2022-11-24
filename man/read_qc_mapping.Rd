@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_qc_mapping.R
 \name{read_qc_mapping}
 \alias{read_qc_mapping}
-\title{Read QC mapping variable}
+\title{Read Quality Control mapping file}
 \usage{
 read_qc_mapping(path)
 }
@@ -11,7 +11,7 @@ read_qc_mapping(path)
 3 tabs with the names missing, inconsistencies and range. Each tab
 will correspond to one QC mapping table.
 
-QC mapping \code{excel} file shoud contain 3 tabs:
+QC mapping \code{excel} file should contain 3 tabs:
 \itemize{
 \item missing: columns should be named as "qc_type",
 "variable" and `type".
@@ -28,7 +28,7 @@ The columns specified above should contain specific values:
 \item type, type1, type2: "numeric", text", "categorical", "date"
 \item relation: expected relation between variable1 and variable2 which can be
 "greater_than", "greater_than_or_equal", "lower_than", "lower_than_or_equal" or "equal".
-\item lower_value, upper_value: expected numeric values respresenting ranges
+\item lower_value, upper_value: expected numeric values representing ranges
 \item categories: expected variable categories
 }}
 }

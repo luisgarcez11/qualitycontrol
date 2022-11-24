@@ -184,7 +184,7 @@ test_duplicated <- function(data, variable){
 
 #' QC dataset using a specific variable mapping
 #'
-#' @param data A data frame, data frame extension (e.g. a `tibble`) to be QCed.
+#' @param data A data frame, data frame extension (e.g. a `tibble`) to be quality controlled.
 #' @param qc_mapping A list of data frame or data frame extension (e.g. a `tibble`) 
 #' specifying the tests. Each data frame row represents a test to the `data`.
 #' @param output_file (optional) File path ended in `.xlsx` or `.xls`. 

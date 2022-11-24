@@ -7,7 +7,7 @@
 qc_data(data, qc_mapping, output_file = NULL)
 }
 \arguments{
-\item{data}{A data frame, data frame extension (e.g. a \code{tibble}) to be QCed.}
+\item{data}{A data frame, data frame extension (e.g. a \code{tibble}) to be quality controlled.}
 
 \item{qc_mapping}{A list of data frame or data frame extension (e.g. a \code{tibble})
 specifying the tests. Each data frame row represents a test to the \code{data}.}

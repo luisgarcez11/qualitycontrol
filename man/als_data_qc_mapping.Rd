@@ -5,7 +5,7 @@
 \alias{als_data_qc_mapping}
 \title{An example dataset containing a Quality Control mapping}
 \format{
-A list of 3 tibbles
+A list of 3 \code{tibbles}.
 
 \itemize{
 \item{missing}{Table with all the 'missing' tests.  }

@@ -1,341 +1,187 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+# qualitycontrol
 
-# `qualitycontrol`
-
-The goal of `long2lstmarray` is to transform 2D longitudinal data into
-3D arrays suitable for neural networks training that require
-longitudinal data (e.g. Long short-term memory). The array output can be
-used by the R `keras` or other similar packages as a X/label set.
+The goal of qualitycontrol is to set a data quality control framework
 
 ## Installation
 
-You can install the `long2lstmarray` from [GitHub](https://github.com/)
+You can install the qualitycontrol from [GitHub](https://github.com/)
 with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("luisgarcez11/long2lstmarray")
+devtools::install_github("luisgarcez11/qualitycontrol")
 ```
-
-## Guide
-
-We will follow a step-by-step approach, starting with the most basic
-function and advancing to the most advanced function. Note that the most
-advanced functions rely on the most basic ones to function properly.
 
 ### Data
 
-The `alsfrs_data` dataset will be used to guide you through the package
-functionality. This data is invented.
+The `als_data` dataset will be used to guide you through the package
+functionality. This data is not real, but based on data retrieved from
+Amyotrophic Lateral Sclerosis patients.
 
 ``` r
-library(long2lstmarray)
-head(alsfrs_data, n = 10)
+library(qualitycontrol)
+als_data
 ```
 
-    ## # A tibble: 10 × 15
-    ##    subjid visdy    p1    p2    p3    p4    p5    p6    p7    p8    p9   p10
-    ##     <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-    ##  1      1     0     3     3     0     0     2     3     3     4     0     4
-    ##  2      1   151     0     0     2     4     3     0     3     1     3     3
-    ##  3      1   223     3     4     0     3     2     3     0     2     2     0
-    ##  4      1   372     1     3     1     3     3     3     4     3     1     1
-    ##  5      1   459     0     4     0     1     1     4     0     0     4     2
-    ##  6      1   535     2     2     4     1     1     0     2     3     0     1
-    ##  7      1   644     4     2     2     3     2     1     0     2     0     0
-    ##  8      1   759     4     0     4     1     2     3     0     2     1     3
-    ##  9      2     0     4     0     3     3     0     0     1     2     3     1
-    ## 10      2   244     3     4     0     4     0     2     1     4     2     4
-    ## # … with 3 more variables: x1r <dbl>, x2r <dbl>, x3r <dbl>
+    ##    subjid p1 p2 p3 p4 p5 p6 p7 p8 p9 x1r x2r x3r age_at_baseline age_at_onset
+    ## 1       1  4  1  1  3  4  3  4  3  4   2   2   1              51           46
+    ## 2       2  4  4  4  1  1  3  3  1  4   1   2   4              82           77
+    ## 3       3  2  3  1  4  3  1  3  1  1   4   3   1              85           80
+    ## 4       4  3  2  1  1  4  1  3  2  4   4   3   3              77           72
+    ## 5       5  3  2  1  3  3  4  4  3  4   1   4   2              85           80
+    ## 6       6  2  2  1  4  1  4  4  3  1   3   5   2              73           68
+    ## 7       7  1  4  2  4  3  3  2  3  4   1   2   2              65           60
+    ## 8       8  2  2  4  4  3  2  1  2  3   3   1   1              50           62
+    ## 9       9  3  1  1  4  4  2  4  1  1   2   2   4              65           46
+    ## 10     10  3  4  1  4  3  2  3  2  1   4   3   1              81           76
+    ## 11     11  1  3  1  3  3  4  1 NA  3   3   2   4              51           46
+    ## 12     12  1  4  3  2  3  2  2 NA  1   3   2   3              50           45
+    ## 13     13  1  1  4  1  1  3  4 NA  2   2   3   1              82           77
+    ## 14     14  3  2  2  4  3  3  3  3  2   3   4   1              76           71
+    ## 15     15  3  4  2  2  2  3  1  3  4   4   1   4              87          376
+    ## 16     16  3  3  2  4  3  3  1  1  2   2   4   1              50           45
+    ## 17     17  3  2  3  1  4  1  3  2  1   4   4   2              85           80
+    ## 18     18  4  1  3  1  3  1  3  2  2   4   3   4              57           52
+    ## 19     19  1  3  3  2  2  2  3  2  3   2   3   2              74           69
+    ## 20     20  2  2  4  2  3  4  2  4  1   4   1   3              59           54
+    ## 21     21  2  3  3  2  3  2  4  4  1   1   3   3              79           74
+    ## 22     22  4  3  1  1  3  4  2  1  4   1   2   3              53           48
+    ## 23     23  3  3  4  3  4  1  3  4  3   2   2   2              45           40
+    ## 24     24  4  1  1  2  4  2  4  4  4   4   2   1              72           67
+    ## 25     25  4  3  1  3  3  4  3  2  3   3   4   2              77           72
+    ## 26     26  2  1  1  2  4  2  4  1  2   3   2   4              65           60
+    ## 27     27  1  1  1  1  1  1  3  3  2   2   1   1              54           49
+    ## 28     28  3  1  1  3  1  4  1  2  2   2   3   4              50          -23
+    ## 29     29  2  3  1  3  1  4  4  1  3   2   4   1              85           80
+    ## 30     30  3  1  2  1  3  1  2  4  1   1   2   4              85           80
+    ## 31     30  3  3  1  4  2  2  1  4  3   3   1   3              53           48
+    ##          onset baseline_date death_date
+    ## 1       bulbar    2003-03-26 2010-10-18
+    ## 2        bulba    2003-07-03 2019-06-24
+    ## 3       spinal    2007-01-27 9999-12-30
+    ## 4       bulbar    2010-11-27 2018-01-04
+    ## 5       bulbar    2006-10-25 2017-10-13
+    ## 6       spinal    2007-04-30 2010-05-08
+    ## 7       spinal    2002-11-15 2019-04-06
+    ## 8       spinal    2002-12-13 2018-05-04
+    ## 9       spinal    2005-06-02 2013-08-11
+    ## 10      bulbar    2004-06-02 2016-05-20
+    ## 11      bulbar    2007-03-09 2016-09-26
+    ## 12      bulbar    2005-01-11 2010-06-20
+    ## 13      bulbar    2010-12-22 2019-07-05
+    ## 14      bulbar    2008-10-14 2013-08-14
+    ## 15      spinal    2005-09-15 2010-07-20
+    ## 16      spinal    2007-07-05 2010-08-28
+    ## 17 respiratory    2002-08-19 2011-10-17
+    ## 18      spinal    2002-06-30 2020-12-17
+    ## 19 respiratory    2010-07-18 2016-05-15
+    ## 20      spinal    2004-08-15 2015-03-15
+    ## 21      bulbar    2006-04-07 2013-03-16
+    ## 22      bulbar    2002-06-01 2016-06-21
+    ## 23      bulbar    2007-08-12 2017-04-01
+    ## 24      bulbar    2006-08-12 2002-12-02
+    ## 25 respiratory    2006-08-11 2016-03-03
+    ## 26      spinal    2005-01-04 2011-10-05
+    ## 27 respiratory    2009-08-25 2015-03-11
+    ## 28      bulbar    2002-05-11 2017-11-09
+    ## 29      bulbar    2004-07-27 2014-03-27
+    ## 30      bulbar    2005-11-11 2015-05-30
+    ## 31      bulbar    2008-02-27 2014-07-05
 
-### `get_var_sequence` function
+### QC mapping
 
-The most basic function has the goal to retrieve the variable values
-from a subject/variable name pair, like this:
+The `als_data_qc_mapping` is an `R list` which contains 3 tables
+specifying all the tests used for quality control. You can specify your
+own tests, by creating an excel file and then read it using the function
+`read_qc_mapping`.
+
+#### Missing
 
 ``` r
-get_var_sequence(data = alsfrs_data, subj_var = "subjid", subj = 1, var = "p1")
+als_data_qc_mapping$missing
 ```
 
-    ## [1] 3 0 3 1 0 2 4 4
+    ## # A tibble: 13 × 3
+    ##    qc_type    variable type   
+    ##    <chr>      <chr>    <chr>  
+    ##  1 duplicated subjid   text   
+    ##  2 missing    p1       numeric
+    ##  3 missing    p2       numeric
+    ##  4 missing    p3       numeric
+    ##  5 missing    p4       numeric
+    ##  6 missing    p5       numeric
+    ##  7 missing    p6       numeric
+    ##  8 missing    p7       numeric
+    ##  9 missing    p8       numeric
+    ## 10 missing    p9       numeric
+    ## 11 missing    x1r      numeric
+    ## 12 missing    x2r      numeric
+    ## 13 missing    x3r      numeric
 
-### `slice_var_sequence` function
-
-Then, the package has the ability to generate a matrix with various lags
-from a sequence. For example, take a simple numeric sequence:
+#### Inconsistencies
 
 ``` r
-slice_var_sequence(sequence = 1:10, lags = 3, label_length = 1, label_output = TRUE)
+als_data_qc_mapping$inconsistencies
 ```
 
-    ## $x
-    ##      [,1] [,2] [,3]
-    ## [1,]    1    2    3
-    ## [2,]    2    3    4
-    ## [3,]    3    4    5
-    ## [4,]    4    5    6
-    ## [5,]    5    6    7
-    ## [6,]    6    7    8
-    ## [7,]    7    8    9
-    ## 
-    ## $y
-    ## [1]  4  5  6  7  8  9 10
+    ## # A tibble: 2 × 6
+    ##   qc_type             variable1       type1   relation     variable2    type2  
+    ##   <chr>               <chr>           <chr>   <chr>        <chr>        <chr>  
+    ## 1 inconsistent_values age_at_baseline numeric greater_than age_at_onset numeric
+    ## 2 inconsistent_values baseline_date   date    lower_than   death_date   date
 
-The result is a list with `x` representing the lags from the sequence,
-and `y` represents the value that follows each lag, and that will be
-used as label. If `label_output = FALSE`, only `x` is returned. The
-`lags` argument represents the number of columns of `x`, and
-`label_length` represents how many values after the lag is considered to
-be the label. If `label_length = 1`, the label value is always the value
-following the sliced sequence.
-
-### `get_var_array` function
-
-This function has the ability to generate a matrix with various lags
-from a variable in a dataframe. This function is analogous to
-`slice_var_sequence` but its scope is larger, because it takes an
-`data.frame` as an argument, and so the `var` to be sequenced has to
-stated. The `time_var` is the time variable which is important to be
-stated because it orders the lags correctly.
+#### Out of range values
 
 ``` r
-get_var_array(data = alsfrs_data, subj_var = "subjid", var = "p3", time_var = "visdy", lags = 5, label_length = 1, label_output = TRUE)
+als_data_qc_mapping$range
 ```
 
-    ## $x
-    ##       time1 time2 time3 time4 time5
-    ## seq1      0     2     0     1     0
-    ## seq2      2     0     1     0     4
-    ## seq3      0     1     0     4     2
-    ## seq4      3     0     2     3     4
-    ## seq5      0     2     3     4     3
-    ## seq6      2     3     4     3     1
-    ## seq7      3     4     3     1     3
-    ## seq8      4     3     1     3     3
-    ## seq9      3     1     3     3     0
-    ## seq10     1     3     3     0     2
-    ## seq11     3     3     0     2     4
-    ## seq12     3     0     2     4     1
-    ## seq13     0     2     4     1     0
-    ## seq14     2     4     1     0     1
-    ## seq15     0     1     1     3     2
-    ## seq16     1     1     3     2     4
-    ## seq17     1     3     2     4     1
-    ## seq18     3     2     4     1     0
-    ## seq19     2     4     1     0     3
-    ## seq20     1     0     3     0     2
-    ## seq21     0     3     0     2     1
-    ## seq22     3     0     2     1     4
-    ## seq23     0     2     1     4     4
-    ## seq24     2     1     4     4     4
-    ## seq25     1     4     4     4     2
-    ## seq26     4     4     4     2     4
-    ## seq27     4     4     2     4     4
-    ## seq28     4     2     1     3     0
-    ## seq29     2     1     3     0     1
-    ## seq30     1     3     0     1     0
-    ## seq31     3     0     1     0     4
-    ## seq32     0     1     0     4     1
-    ## seq33     4     4     4     1     0
-    ## seq34     4     4     1     0     2
-    ## seq35     4     1     0     2     2
-    ## seq36     1     0     2     2     3
-    ## seq37     0     2     2     3     0
-    ## 
-    ## $y
-    ##  [1] 4 2 4 3 1 3 3 0 2 4 1 0 1 2 4 1 0 3 4 1 4 4 4 2 4 4 0 1 0 4 1 0 2 2 3 0 2
+    ## # A tibble: 16 × 6
+    ##    qc_type variable        type        lower_value upper_value categories       
+    ##    <chr>   <chr>           <chr>       <chr>       <chr>       <chr>            
+    ##  1 range   p1              numeric     1           4           <NA>             
+    ##  2 range   p2              numeric     1           4           <NA>             
+    ##  3 range   p3              numeric     1           4           <NA>             
+    ##  4 range   p4              numeric     1           4           <NA>             
+    ##  5 range   p5              numeric     1           4           <NA>             
+    ##  6 range   p6              numeric     1           4           <NA>             
+    ##  7 range   p7              numeric     1           4           <NA>             
+    ##  8 range   p8              numeric     1           4           <NA>             
+    ##  9 range   p9              numeric     1           4           <NA>             
+    ## 10 range   x1r             numeric     1           4           <NA>             
+    ## 11 range   x2r             numeric     1           4           <NA>             
+    ## 12 range   x3r             numeric     1           4           <NA>             
+    ## 13 range   age_at_baseline numeric     20          100         <NA>             
+    ## 14 range   age_at_onset    numeric     20          100         <NA>             
+    ## 15 range   death_date      date        2000-01-01  2022-01-01  <NA>             
+    ## 16 range   onset           categorical <NA>        <NA>        bulbar, respirat…
 
-### `longitudinal_array` function
+### `qc_data` function
 
-This function is analogous to the previous get_var_array function. This
-function has the ability to generate a matrix with various lags from
-various variables in a dataframe. The returned object is a 3D array. The
-array dimensions are respectively, subject, time and variable. If
-`label_output` is `TRUE`, a list with the 3D array and vector with the
-labels is returned.
+`qc_data` takes as arguments the data to be quality controlled and the
+QC mapping containing the tests to be applied.
 
 ``` r
-array3d <- longitudinal_array(alsfrs_data, "subjid", vars =  c("p1", "p2", "p3"), time_var =  "visdy", lags = 3, label_output = FALSE)
+qc_data(als_data, als_data_qc_mapping)[,c("subjid","age_at_onset","onset","baseline_date","death_date","finding")]
 ```
 
-First dimension, representing the subjects (e.g. `subjid` = 1):
+    ## # A tibble: 13 × 6
+    ##    subjid age_at_onset onset  baseline_date death_date finding                  
+    ##    <chr>  <chr>        <chr>  <chr>         <chr>      <chr>                    
+    ##  1 30     80           bulbar 2005-11-11    2015-05-30 subjid variable is dupli…
+    ##  2 30     48           bulbar 2008-02-27    2014-07-05 subjid variable is dupli…
+    ##  3 11     46           bulbar 2007-03-09    2016-09-26 variable p8 is missing   
+    ##  4 12     45           bulbar 2005-01-11    2010-06-20 variable p8 is missing   
+    ##  5 13     77           bulbar 2010-12-22    2019-07-05 variable p8 is missing   
+    ##  6 6      68           spinal 2007-04-30    2010-05-08 variable x2r is out of r…
+    ##  7 15     376          spinal 2005-09-15    2010-07-20 variable age_at_onset is…
+    ##  8 28     -23          bulbar 2002-05-11    2017-11-09 variable age_at_onset is…
+    ##  9 3      80           spinal 2007-01-27    9999-12-30 variable death_date is o…
+    ## 10 2      77           bulba  2003-07-03    2019-06-24 variable onset is not a …
+    ## 11 8      62           spinal 2002-12-13    2018-05-04 variables age_at_baselin…
+    ## 12 15     376          spinal 2005-09-15    2010-07-20 variables age_at_baselin…
+    ## 13 24     67           bulbar 2006-08-12    2002-12-02 variables baseline_date …
 
-``` r
-array3d[1,,]
-```
-
-    ##       p1 p2 p3
-    ## time1  3  3  0
-    ## time2  0  0  2
-    ## time3  3  4  0
-
-Second dimension, representing time (e.g. first visit):
-
-``` r
-array3d[,1,]
-```
-
-    ##       p1 p2 p3
-    ## seq1   3  3  0
-    ## seq2   0  0  2
-    ## seq3   3  4  0
-    ## seq4   1  3  1
-    ## seq5   0  4  0
-    ## seq6   4  0  3
-    ## seq7   3  4  0
-    ## seq8   0  3  2
-    ## seq9   1  4  3
-    ## seq10  3  3  4
-    ## seq11  3  3  3
-    ## seq12  4  0  1
-    ## seq13  3  0  3
-    ## seq14  2  4  3
-    ## seq15  3  1  0
-    ## seq16  1  3  2
-    ## seq17  4  4  4
-    ## seq18  2  0  1
-    ## seq19  1  0  1
-    ## seq20  3  3  3
-    ## seq21  2  4  0
-    ## seq22  4  1  1
-    ## seq23  4  4  1
-    ## seq24  1  3  3
-    ## seq25  1  4  2
-    ## seq26  3  3  4
-    ## seq27  1  2  1
-    ## seq28  2  1  1
-    ## seq29  3  4  0
-    ## seq30  0  1  3
-    ## seq31  3  0  0
-    ## seq32  1  3  2
-    ## seq33  4  3  1
-    ## seq34  1  2  4
-    ## seq35  3  2  4
-    ## seq36  1  0  4
-    ## seq37  1  4  2
-    ## seq38  0  3  4
-    ## seq39  4  0  1
-    ## seq40  2  0  0
-    ## seq41  0  4  4
-    ## seq42  2  4  2
-    ## seq43  2  3  1
-    ## seq44  4  1  3
-    ## seq45  0  3  0
-    ## seq46  1  4  1
-    ## seq47  0  3  0
-    ## seq48  0  3  4
-    ## seq49  1  0  4
-    ## seq50  1  4  4
-    ## seq51  1  1  1
-    ## seq52  1  3  0
-    ## seq53  3  0  2
-    ## seq54  1  1  2
-    ## seq55  4  3  4
-
-Third dimension, representing the variables (e.g. `p1`):
-
-``` r
-array3d[,,1] 
-```
-
-    ##       time1 time2 time3
-    ## seq1      3     0     3
-    ## seq2      0     3     1
-    ## seq3      3     1     0
-    ## seq4      1     0     2
-    ## seq5      0     2     4
-    ## seq6      4     3     0
-    ## seq7      3     0     1
-    ## seq8      0     1     3
-    ## seq9      1     3     3
-    ## seq10     3     3     4
-    ## seq11     3     4     3
-    ## seq12     4     3     2
-    ## seq13     3     2     3
-    ## seq14     2     3     1
-    ## seq15     3     1     4
-    ## seq16     1     4     2
-    ## seq17     4     2     1
-    ## seq18     2     1     1
-    ## seq19     1     3     0
-    ## seq20     3     0     3
-    ## seq21     2     4     4
-    ## seq22     4     4     1
-    ## seq23     4     1     1
-    ## seq24     1     1     3
-    ## seq25     1     3     1
-    ## seq26     3     1     4
-    ## seq27     1     4     1
-    ## seq28     2     3     0
-    ## seq29     3     0     3
-    ## seq30     0     3     1
-    ## seq31     3     1     4
-    ## seq32     1     4     1
-    ## seq33     4     1     3
-    ## seq34     1     3     1
-    ## seq35     3     1     1
-    ## seq36     1     1     4
-    ## seq37     1     4     1
-    ## seq38     0     3     0
-    ## seq39     4     2     1
-    ## seq40     2     1     4
-    ## seq41     0     2     2
-    ## seq42     2     2     4
-    ## seq43     2     4     0
-    ## seq44     4     0     1
-    ## seq45     0     1     0
-    ## seq46     1     0     3
-    ## seq47     0     3     0
-    ## seq48     0     1     1
-    ## seq49     1     1     1
-    ## seq50     1     1     1
-    ## seq51     1     1     3
-    ## seq52     1     3     1
-    ## seq53     3     1     0
-    ## seq54     1     0     0
-    ## seq55     4     0     0
-
-## `keras` interface
-
-The great advantage of this package is that the `longitudinal_array`
-function output can be used to train Long short-term memory neural
-networks in R `keras` package or other similar packages to train models
-that use longitudinal data.
-
-To show an example, first install `keras` package.
-
-``` r
-#install.packages("keras")
-library(keras)
-```
-
-Set X train and labels:
-
-``` r
-array3d <- longitudinal_array(alsfrs_data, "subjid", vars =  c("p1", "p2", "p3"), label_var = "p4", time_var =  "visdy", lags = 3, label_output = TRUE)
-
-x_train = array3d$x
-y_train = array3d$y
-```
-
-Set a Long short-term memory neural network model:
-
-``` r
-model <- keras::keras_model_sequential()
-model %>%
-    layer_lstm(
-      units = 100,
-      input_shape = dim(x_train)[2:3],
-      return_sequences = TRUE,
-      stateful = FALSE) %>%
-    layer_dense(units = 1)
-        
-# compile model
-model %>% keras::compile(loss = "mse")
-
-#fit model
-history <- model %>% fit(
-          x = x_train,
-          y = y_train)
-```
+This will return a table with all the findings. If you want to save it,
+you can specify the path to be saved in `output_file`.
