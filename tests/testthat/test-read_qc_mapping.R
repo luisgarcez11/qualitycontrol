@@ -22,5 +22,6 @@ test_that("dimension/expected errors", {
   testthat::expect_error(qualitycontrol::read_qc_mapping(path = testthat::test_path("test_datasets", "qc_mapping_error12.xlsx")))
 
 
+  
 
 })

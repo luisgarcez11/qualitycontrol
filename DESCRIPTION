@@ -1,13 +1,13 @@
 Package: qualitycontrol
 Title: Unified Framework for Data Quality Control
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: 
   person(given = "Luis",
          family = "Garcez",
          role = c("aut", "cre", "cph"),
          email = "luisgarcez1@gmail.com",
          comment = c(ORCID = "0000-0002-8637-7946"))
-Maintainer: Luis Garcez <luis_garcez_ferreira@alunos.fc.ul.pt>
+Maintainer: Luis Garcez <luisgarcez1@gmail.com>
 Description: An easy framework to set a quality control workflow on a dataset.
   Includes a various range of functions that allow to establish an adaptable 
   data quality control.

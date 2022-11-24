@@ -16,7 +16,7 @@ test_range(
 \arguments{
 \item{data}{data to be tested.}
 
-\item{variable}{The variable to be testes}
+\item{variable}{The variable to be tested.}
 
 \item{type}{String such as 'categorical', 'date' or 'numeric'}
 

@@ -28,7 +28,6 @@
 #' 
 #' @return A list containing all the QC mapping tables
 #' @export
-#' 
 read_qc_mapping <- function(path){
   
   excelsheets <- readxl::excel_sheets(path)

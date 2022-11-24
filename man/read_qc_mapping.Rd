@@ -36,6 +36,6 @@ The columns specified above should contain specific values:
 A list containing all the QC mapping tables
 }
 \description{
-\code{data_qc_mapping} reads an \code{.xlsx} file that contains
+\code{read_qc_mapping} reads an \code{.xlsx} file that contains
 the QC mapping.
 }

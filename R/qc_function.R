@@ -2,7 +2,7 @@
 #' Test the range of a variable on a dataset
 #'
 #' @param data data to be tested.
-#' @param variable The variable to be testes
+#' @param variable The variable to be tested.
 #' @param type String such as 'categorical', 'date' or 'numeric'
 #' @param categories Only to be filled if `type` is 'categorical'. String of categories.
 #' @param lower_value Only to be filled if `type` is 'numeric' or 'date'. Can be numeric or string.
@@ -39,12 +39,13 @@ test_range <- function(data, variable, type, categories = NULL,
   
   if(type == 'numeric'){
     
+    if(is.null(lower_value)){stop('lower value must be specified')}
+    if(is.null(upper_value)){stop('upper value must be specified')}
+    
     data[[variable]] <- as.numeric(data[[variable]])
     lower_value <- as.numeric(lower_value)
     upper_value <- as.numeric(upper_value)
     
-    if(is.null(lower_value)){stop('lower value must be specified')}
-    if(is.null(upper_value)){stop('upper value must be specified')}
     
     findings<- data[which(data[[variable]] < lower_value | data[[variable]] > upper_value),] %>% 
       dplyr::mutate(finding = paste('variable', variable,  'is out of range'))
@@ -57,16 +58,14 @@ test_range <- function(data, variable, type, categories = NULL,
     
     data[[variable]] <- as.character(data[[variable]])
     
+    if(is.null(lower_value)){stop('lower value must be specified')}
+    if(is.null(upper_value)){stop('upper value must be specified')}
+    
     findings_format <- data[!stringr::str_detect(string = data[[variable]], 
                                                 pattern = '\\d{4}(-|/)\\d{2}(-|/)\\d{2}') &
                              !is.na(data[[variable]]),] %>% 
       dplyr::mutate(finding = paste('variable', variable,  'is not on the right format'))
   
-    if(lubridate::year(as.Date(lower_value))< 1900){stop('write dates on YYYY-MM-DD format')}
-    if(lubridate::year(as.Date(upper_value))< 1900){stop('write dates on YYYY-MM-DD format')}
-    
-    if(is.null(lower_value)){stop('lower value must be specified')}
-    if(is.null(upper_value)){stop('upper value must be specified')}
     
     findings <- data[which(as.Date(data[[variable]]) < as.Date(lower_value) | 
                              as.Date(data[[variable]]) > as.Date(upper_value)),] %>% 
