@@ -23,7 +23,7 @@
 #' * type, type1, type2: "numeric", text", "categorical", "date"
 #' * relation: expected relation between variable1 and variable2 which can be
 #' "greater_than", "greater_than_or_equal", "lower_than", "lower_than_or_equal" or "equal".
-#' * lower_value, upper_value: expected numeric values respresenting ranges
+#' * lower_value, upper_value: expected numeric values representing ranges
 #' * categories: expected variable categories
 #' 
 #' @return A list containing all the QC mapping tables

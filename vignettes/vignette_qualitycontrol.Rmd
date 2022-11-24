@@ -42,7 +42,7 @@ devtools::install_github("luisgarcez11/qualitycontrol")
 
 ### Data
 
-The `als_data` dataset will be used to guide you through the package functionality. This data is not real, but based on data retrieved from ALS patients.
+The `als_data` dataset will be used to guide you through the package functionality. This data is not real, but based on data retrieved from Amyotrophic Lateral Sclerosis patients.
 
 ```{r example, eval = TRUE}
 library(qualitycontrol)
@@ -71,7 +71,7 @@ als_data_qc_mapping$range
 
 ### `qc_data` function
 
-`qc_data` takes as arguments the data to be QCed and the QC mapping containing the tests to be applied.
+`qc_data` takes as arguments the data to be quality contolled and the QC mapping containing the tests to be applied.
 
 ```{r}
 qc_data(als_data, als_data_qc_mapping)

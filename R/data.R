@@ -1,6 +1,6 @@
 #' ALS Example dataset
 #'
-#' An ALS-related example dataset.
+#' An Amyotrophic lateral sclerosis related example dataset.
 #'
 #' @format A list
 #' \itemize{
@@ -27,7 +27,7 @@
 
 #' An example dataset containing a Quality Control mapping
 #'
-#' @format A list of 3 tibbles
+#' @format A list of 3 `tibbles`.
 #' 
 #' \itemize{
 #'   \item{missing}{Table with all the 'missing' tests.  }
