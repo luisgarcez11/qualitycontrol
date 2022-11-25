@@ -270,7 +270,7 @@ qc_data <- function(data, qc_mapping, output_file = NULL){
   
   if(!is.null(output_file)){
     
-    print(paste("writing findings in", output_file))
+    message(paste("writing findings in", output_file))
     openxlsx::write.xlsx(findings, file = output_file)
     return(findings)
   }
