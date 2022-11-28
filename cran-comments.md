@@ -9,6 +9,8 @@ So there is no need for stating it in description.
 
 print() functions removed and replaced by message()
 
+2022-11-28: Vignette name changed.
+
 
 
 ## R CMD check results
