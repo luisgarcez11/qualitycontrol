@@ -2,7 +2,7 @@
 title: "qualitycontrol"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{arrary2lstmarray}
+  %\VignetteIndexEntry{qualitycontrol}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
